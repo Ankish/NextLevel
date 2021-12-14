@@ -444,7 +444,7 @@ public class NextLevel: NSObject {
     #endif
     internal var _metadataOutput: AVCaptureMetadataOutput?
 
-    internal var _currentDevice: AVCaptureDevice?
+    public var _currentDevice: AVCaptureDevice?
     internal var _requestedDevice: AVCaptureDevice?
     internal var _observers = [NSKeyValueObservation]()
     internal var _captureOutputObservers = [NSKeyValueObservation]()
@@ -3053,6 +3053,7 @@ extension NextLevel {
         NotificationCenter.default.removeObserver(self, name: .AVCaptureDeviceSubjectAreaDidChange, object: nil)
         NotificationCenter.default.removeObserver(self, name: .AVCaptureInputPortFormatDescriptionDidChange, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
+        NotificationCenter.default.removeObserver(self)
     }
 
     @objc internal func deviceSubjectAreaDidChange(_ notification: NSNotification) {
