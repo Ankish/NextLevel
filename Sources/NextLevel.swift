@@ -2162,7 +2162,7 @@ extension NextLevel {
     /// - Parameters:
     ///   - frameRate: Desired frame rate.
     ///   - dimensions: Desired video dimensions.
-    public func updateDeviceFormat(withFrameRate frameRate: CMTimeScale, dimensions: CMVideoDimensions) {
+    public func updateDeviceFormat(withFrameRate frameRate: CMTimeScale, dimensions: CMVideoDimensions, checkforEqualityOnly : Bool = false) {
         self.executeClosureAsyncOnSessionQueueIfNecessary {
             guard let device = self._currentDevice else {
                 return
@@ -2170,7 +2170,7 @@ extension NextLevel {
 
             var updatedFormat: AVCaptureDevice.Format?
             for currentFormat in device.formats {
-                if currentFormat.isSupported(withFrameRate: frameRate, dimensions: dimensions) {
+                if currentFormat.isSupported(withFrameRate: frameRate, dimensions: dimensions, checkforEqualityOnly: checkforEqualityOnly) {
                     if updatedFormat == nil {
                         updatedFormat = currentFormat
                     } else if let updated = updatedFormat {

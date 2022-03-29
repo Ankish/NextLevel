@@ -194,6 +194,7 @@ extension AVCaptureDevice.Format {
     ///   - frameRate: Desired frame rate
     ///   - dimensions: Desired video dimensions
     /// - Returns: `true` if the capture device format supports the given criteria, otherwise false
+   /*
     public func isSupported(withFrameRate frameRate: CMTimeScale, dimensions: CMVideoDimensions = CMVideoDimensions(width: 0, height: 0)) -> Bool {
         let formatDimensions = CMVideoFormatDescriptionGetDimensions(self.formatDescription)
         if formatDimensions.width >= dimensions.width && formatDimensions.height >= dimensions.height {
@@ -203,6 +204,23 @@ extension AVCaptureDevice.Format {
                 }
             }
         }
+        return false
+    }*/
+    
+    public func isSupported(withFrameRate frameRate: CMTimeScale, dimensions: CMVideoDimensions = CMVideoDimensions(width: 0, height: 0), checkforEqualityOnly : Bool = false) -> Bool {
+        let formatDimensions = CMVideoFormatDescriptionGetDimensions(self.formatDescription)
+        if formatDimensions.width >= dimensions.width && formatDimensions.height >= dimensions.height {
+            for frameRateRange in self.videoSupportedFrameRateRanges {
+                if UInt32(frameRateRange.maxFrameRate) >= frameRate.magnitude && Int32(frameRateRange.minFrameRate) <= frameRate {
+                    if !checkforEqualityOnly{
+                        return true
+                    }
+                    print(#function, "Using",formatDescription,"des", self.description)
+                    return UInt32(frameRateRange.maxFrameRate) == frameRate.magnitude
+                }
+            }
+        }
+        print("&&Skipping format = ",description)
         return false
     }
 
