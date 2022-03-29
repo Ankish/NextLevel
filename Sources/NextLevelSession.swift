@@ -35,10 +35,10 @@ public class NextLevelSession {
     public var outputDirectory: String
 
     /// Output file type for a session, see AVMediaFormat.h for supported types.
-    public var fileType: AVFileType = .mp4
+    public var fileType: AVFileType = .mov
 
     /// Output file extension for a session, see AVMediaFormat.h for supported extensions.
-    public var fileExtension: String = "mp4"
+    public var fileExtension: String = "mov"
 
     /// Unique identifier for a session.
     public var identifier: UUID {
@@ -272,7 +272,9 @@ extension NextLevelSession {
             videoInput.transform = configuration.transform
             self._videoConfiguration = configuration
 
-            var pixelBufferAttri: [String: Any] = [String(kCVPixelBufferPixelFormatTypeKey): Int(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange)]
+           // var pixelBufferAttri: [String: Any] = [String(kCVPixelBufferPixelFormatTypeKey): Int(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange)]
+            var pixelBufferAttri: [String : Any] = [String(kCVPixelBufferPixelFormatTypeKey): Int(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange)]
+
 
             if let formatDescription = formatDescription {
                 let videoDimensions = CMVideoFormatDescriptionGetDimensions(formatDescription)
