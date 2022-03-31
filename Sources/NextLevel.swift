@@ -2573,12 +2573,13 @@ extension NextLevel {
 
         if self._recording && (session.isAudioSetup || self.captureMode == .videoWithoutAudio) && session.currentClipHasStarted {
             self.beginRecordingNewClipIfNecessary()
-
-            let minTimeBetweenFrames = 0.004
-            let sleepDuration = minTimeBetweenFrames - (CACurrentMediaTime() - self._lastVideoFrameTimeInterval)
-            if sleepDuration > 0 {
-                Thread.sleep(forTimeInterval: sleepDuration)
-            }
+            
+// Causes to record at lower FPS for 240 FPS 
+//            let minTimeBetweenFrames = 0.004
+//            let sleepDuration = minTimeBetweenFrames - (CACurrentMediaTime() - self._lastVideoFrameTimeInterval)
+//            if sleepDuration > 0 {
+//                Thread.sleep(forTimeInterval: sleepDuration)
+//            }
 
             // check with the client to setup/maintain external render contexts
             let imageBuffer = self.isVideoCustomContextRenderingEnabled == true ? CMSampleBufferGetImageBuffer(sampleBuffer) : nil
