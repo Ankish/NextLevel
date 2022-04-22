@@ -655,7 +655,45 @@ extension NextLevel {
 
             if let session = self._captureSession {
                 session.automaticallyConfiguresApplicationAudioSession = self.automaticallyConfiguresApplicationAudioSession
+                
+                //Upt
+                session.usesApplicationAudioSession = true
+                let audioSession = AVAudioSession.sharedInstance()
+                var input: AVAudioSessionPortDescription!
+                
+                do {
+                    try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .videoRecording, options: [])
+                    try AVAudioSession.sharedInstance().setActive(true)
 
+                    // Fetch Built in Mic
+                    if let availableInputs = audioSession.availableInputs {
+                        for inputSource in availableInputs {
+                            if inputSource.portType == AVAudioSession.Port.builtInMic {
+                                input = inputSource
+                                break
+                            }
+                        }
+                    }
+
+                    // Set preferred data source by location
+                    if let dataSources = input.dataSources {
+                        for dataSource in dataSources {
+                            if dataSource.location == AVAudioSession.Location(rawValue: "Upper") && dataSource.orientation == AVAudioSession.Orientation(rawValue: "Back") {
+                                try dataSource.setPreferredPolarPattern(AVAudioSession.PolarPattern(rawValue: "Subcardioid"))
+                                try input.setPreferredDataSource(dataSource)
+                                break
+                            }
+                         }
+                     }
+                    
+                    try audioSession.setPreferredInput(input)
+                    
+                 
+                } catch let error as NSError {
+                    print(error)
+                }
+                //
+                
                 self.beginConfiguration()
                 self.previewLayer.session = session
 
