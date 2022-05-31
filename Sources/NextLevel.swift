@@ -1360,7 +1360,18 @@ extension NextLevel {
 
     /// Triggers a camera device position change.
     public func flipCaptureDevicePosition() {
-        self.devicePosition = self.devicePosition == .back ? .front : .back
+        bestDevice(in: self.devicePosition == .back ? .front : .back)
+    }
+
+    public func bestDevice(in position: AVCaptureDevice.Position) {
+        if let videoDevice = AVCaptureDevice.primaryVideoDevice(forPosition: self.devicePosition){
+            self.executeClosureAsyncOnSessionQueueIfNecessary {
+                self._requestedDevice = videoDevice
+                self.devicePosition = position
+            }
+        } else {
+            print("NL: Issue finding best device")
+        }
     }
 
     /// Changes capture device if the desired device is available.
