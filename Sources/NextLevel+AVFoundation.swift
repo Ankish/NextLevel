@@ -118,7 +118,8 @@ extension AVCaptureDevice {
     /// - Returns: Primary video capture device found, otherwise nil
     public class func primaryVideoDevice(forPosition position: AVCaptureDevice.Position) -> AVCaptureDevice? {
         var deviceTypes: [AVCaptureDevice.DeviceType] = [AVCaptureDevice.DeviceType.builtInWideAngleCamera]
-        deviceTypes.append(.builtInDualCamera)
+        //Commenting this line as in builtInDualCamera - high FPS is not supported
+        //deviceTypes.append(.builtInDualCamera)
 
         // prioritize duo camera systems before wide angle
         let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: deviceTypes, mediaType: AVMediaType.video, position: position)
