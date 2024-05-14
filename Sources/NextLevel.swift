@@ -1683,9 +1683,7 @@ extension NextLevel {
     ///
     /// - Parameter adjustedPoint: The point of interest.
     public func focusExposeAndAdjustWhiteBalance(atAdjustedPoint adjustedPoint: CGPoint) {
-        guard let device = self._currentDevice,
-            !device.isAdjustingFocus,
-            !device.isAdjustingExposure
+        guard let device = self._currentDevice
             else {
                 return
         }
@@ -1694,15 +1692,15 @@ extension NextLevel {
             try device.lockForConfiguration()
 
             let focusMode: AVCaptureDevice.FocusMode = .autoFocus
-            let exposureMode: AVCaptureDevice.ExposureMode = .continuousAutoExposure
-            let whiteBalanceMode: AVCaptureDevice.WhiteBalanceMode = .continuousAutoWhiteBalance
+            let exposureMode: AVCaptureDevice.ExposureMode = .autoExpose
+            let whiteBalanceMode: AVCaptureDevice.WhiteBalanceMode = .autoWhiteBalance
 
-            if device.isFocusPointOfInterestSupported && device.isFocusModeSupported(focusMode) {
+            if device.isFocusPointOfInterestSupported && device.isFocusModeSupported(focusMode) && !device.isAdjustingFocus  {
                 device.focusPointOfInterest = adjustedPoint
                 device.focusMode = focusMode
             }
 
-            if device.isExposurePointOfInterestSupported && device.isExposureModeSupported(exposureMode) {
+            if device.isExposurePointOfInterestSupported && device.isExposureModeSupported(exposureMode) && !device.isAdjustingExposure {
                 device.exposurePointOfInterest = adjustedPoint
                 device.exposureMode = exposureMode
             }
